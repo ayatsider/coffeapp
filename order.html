@@ -11,7 +11,6 @@
   <!-- Font Awesome -->
   <script src="https://kit.fontawesome.com/a2d9a64e2f.js" crossorigin="anonymous"></script>
 
-  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: "Poppins", sans-serif;
@@ -57,6 +56,7 @@
       border-radius: 15px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.08);
       transition: transform 0.2s, box-shadow 0.2s;
+      width: 100%;
     }
 
     label:hover {
@@ -80,6 +80,7 @@
       font-size: 1rem;
       cursor: pointer;
       transition: 0.3s;
+      margin-top: 10px;
     }
 
     button:hover {
@@ -93,6 +94,45 @@
       font-size: 1.2rem;
       color: #4b2e05;
     }
+
+    .sub-options {
+      overflow: hidden;
+      max-height: 0;
+      margin-left: 20px;
+      text-align: left;
+      gap: 10px;
+      transition: max-height 0.5s ease, padding 0.5s ease;
+    }
+
+    .sub-options.open {
+      max-height: 500px;
+      padding: 10px 0;
+    }
+
+    .sub-options label {
+      background: #fff;
+      padding: 10px 15px;
+      border-radius: 12px;
+      font-size: 1rem;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 5px;
+      cursor: pointer;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    .sub-options label:hover {
+      background: #f0e5d8;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    }
+
+    .sub-options i {
+      color: #4b2e05;
+      min-width: 20px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -104,14 +144,30 @@
     <h2>اختر منتجاتك</h2>
     <form id="orderForm">
       <label>
-        <input type="checkbox" name="product" value="Hot Coffee"> ☕ Hot Coffee
+        <input type="checkbox" name="product" value="Hot Coffee" id="hotCoffeeCheck"> ☕ Hot Coffee
       </label>
+      <div id="hotCoffeeOptions" class="sub-options">
+        <label><i class="fas fa-mug-hot"></i><input type="checkbox" value="Espresso"> Espresso</label>
+        <label><i class="fas fa-mug-hot"></i><input type="checkbox" value="Latte"> Latte</label>
+      </div>
+
       <label>
-        <input type="checkbox" name="product" value="Cold Coffee"> 🧊 Cold Coffee
+        <input type="checkbox" name="product" value="Cold Coffee" id="coldCoffeeCheck"> 🧊 Cold Coffee
       </label>
+      <div id="coldCoffeeOptions" class="sub-options">
+        <label><i class="fas fa-cup-straw"></i><input type="checkbox" value="Iced Latte"> Iced Latte</label>
+        <label><i class="fas fa-cup-straw"></i><input type="checkbox" value="Frappuccino"> Frappuccino</label>
+      </div>
+
       <label>
-        <input type="checkbox" name="product" value="Dessert"> 🍰 Dessert
+        <input type="checkbox" name="product" value="Dessert" id="dessertCheck"> 🍰 Dessert
       </label>
+      <div id="dessertOptions" class="sub-options">
+        <label><i class="fas fa-birthday-cake"></i><input type="checkbox" value="Chocolate Cake"> Chocolate Cake</label>
+        <label><i class="fas fa-birthday-cake"></i><input type="checkbox" value="Cheesecake"> Cheesecake</label>
+        <label><i class="fas fa-ice-cream"></i><input type="checkbox" value="Ice Cream"> Ice Cream</label>
+      </div>
+
       <button type="submit">Submit Order</button>
     </form>
 
@@ -122,18 +178,30 @@
     const form = document.getElementById('orderForm');
     const result = document.getElementById('orderResult');
 
+    function toggleOptions(checkbox, optionsDiv) {
+      checkbox.addEventListener('change', () => {
+        optionsDiv.classList.toggle('open', checkbox.checked);
+      });
+    }
+
+    toggleOptions(document.getElementById('hotCoffeeCheck'), document.getElementById('hotCoffeeOptions'));
+    toggleOptions(document.getElementById('coldCoffeeCheck'), document.getElementById('coldCoffeeOptions'));
+    toggleOptions(document.getElementById('dessertCheck'), document.getElementById('dessertOptions'));
+
     form.addEventListener('submit', (e) => {
       e.preventDefault();
 
-      const selected = Array.from(form.elements['product'])
+      const selectedMain = Array.from(form.elements['product'])
         .filter(el => el.checked)
         .map(el => el.value);
 
-      if(selected.length === 0) {
-        result.textContent = 'لم يتم اختيار أي منتج';
-      } else {
-        result.textContent = 'لقد اخترت: ' + selected.join(', ');
-      }
+      const selectedSub = Array.from(document.querySelectorAll(
+        '#hotCoffeeOptions input:checked, #coldCoffeeOptions input:checked, #dessertOptions input:checked'
+      )).map(el => el.value);
+
+      const allSelected = [...selectedMain, ...selectedSub];
+
+      result.textContent = allSelected.length === 0 ? 'لم يتم اختيار أي منتج' : 'لقد اخترت: ' + allSelected.join(', ');
     });
   </script>
 </body>
