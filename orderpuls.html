@@ -167,6 +167,16 @@
         <label><i class="fas fa-birthday-cake"></i><input type="checkbox" value="Cheesecake"> Cheesecake</label>
         <label><i class="fas fa-ice-cream"></i><input type="checkbox" value="Ice Cream"> Ice Cream</label>
       </div>
+
+      <!-- New Section: Cold Drinks -->
+      <label>
+        <input type="checkbox" name="product" value="Cold Drinks" id="coldDrinksCheck"> 🥤 Cold Drinks
+      </label>
+      <div id="coldDrinksOptions" class="sub-options">
+        <label><i class="fas fa-wine-glass-alt"></i><input type="checkbox" value="Lemonade"> Lemonade</label>
+        <label><i class="fas fa-wine-glass-alt"></i><input type="checkbox" value="Iced Tea"> Iced Tea</label>
+        <label><i class="fas fa-wine-glass-alt"></i><input type="checkbox" value="Fruit Juice"> Fruit Juice</label>
+      </div>
       
       <button type="submit">Submit Order</button>
     </form>
@@ -187,6 +197,7 @@
     toggleOptions(document.getElementById('hotCoffeeCheck'), document.getElementById('hotCoffeeOptions'));
     toggleOptions(document.getElementById('coldCoffeeCheck'), document.getElementById('coldCoffeeOptions'));
     toggleOptions(document.getElementById('dessertCheck'), document.getElementById('dessertOptions'));
+    toggleOptions(document.getElementById('coldDrinksCheck'), document.getElementById('coldDrinksOptions'));
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -196,7 +207,7 @@
         .map(el => el.value);
 
       const selectedSub = Array.from(document.querySelectorAll(
-        '#hotCoffeeOptions input:checked, #coldCoffeeOptions input:checked, #dessertOptions input:checked'
+        '#hotCoffeeOptions input:checked, #coldCoffeeOptions input:checked, #dessertOptions input:checked, #coldDrinksOptions input:checked'
       )).map(el => el.value);
 
       const allSelected = [...selectedMain, ...selectedSub];
